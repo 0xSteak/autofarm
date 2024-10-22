@@ -32,7 +32,7 @@ local function tween(pos)
 
     local distance = (rootPart.Position - pos).Magnitude
 
-    local tween = TweenService:Create(rootPart, TweenInfo.new(distance / 22, Enum.EasingStyle.Linear), {CFrame = CFrame.new(pos)})
+    local tween = TweenService:Create(rootPart, TweenInfo.new(distance / 26, Enum.EasingStyle.Linear), {CFrame = CFrame.new(pos)})
     game.Players.LocalPlayer.Character.Humanoid:ChangeState(6)
     tween:Play()
     return tween
