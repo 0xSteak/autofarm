@@ -152,7 +152,7 @@ CoinsStarted.OnClientEvent:Connect(function()
 end)
 
 game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
-    queue_on_teleport(game:HttpGet("https://raw.githubusercontent.com/0xSteak/autofarm/refs/heads/main/main.lua"))
+    queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/0xSteak/autofarm/refs/heads/main/main.lua"))()')
     game:GetService("TeleportService"):Teleport(game.PlaceId)
 end)
 
