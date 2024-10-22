@@ -153,7 +153,7 @@ end)
 
 game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
     game:GetService("TeleportService"):Teleport(game.PlaceId)
-    queue_on_teleport()
+    queue_on_teleport(game:HttpGet("https://raw.githubusercontent.com/0xSteak/autofarm/refs/heads/main/main.lua"))
 end)
 
 local ScreenGui = Instance.new("ScreenGui")
