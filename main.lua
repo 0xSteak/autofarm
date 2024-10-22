@@ -1,4 +1,4 @@
-game.Loaded:Wait()
+repeat wait() until game:IsLoaded()
 
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
