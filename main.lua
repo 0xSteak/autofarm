@@ -1,5 +1,7 @@
 repeat wait() until game:IsLoaded()
 
+local runArgs = {...}
+
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -12,7 +14,7 @@ local stop = false
 local lostCoinCount = 0
 local lastCoin
 local tries = 0
-local enabled = false
+local enabled = runArgs[1] and true or false
 local canCollect = true
 local tpCooldown = tick()
 
@@ -154,7 +156,7 @@ CoinsStarted.OnClientEvent:Connect(function()
 end)
 
 game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
-    queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/0xSteak/autofarm/refs/heads/main/main.lua"))()')
+    queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/0xSteak/autofarm/refs/heads/main/main.lua"))(true)')
     game:GetService("TeleportService"):Teleport(game.PlaceId)
 end)
 
@@ -164,7 +166,7 @@ ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Parent = ScreenGui
-ToggleButton.BackgroundColor3 = Color3.new(1, 0, 0)
+ToggleButton.BackgroundColor3 = enabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
 ToggleButton.BorderColor3 = Color3.new(0, 0, 0)
 ToggleButton.Size = UDim2.fromOffset(25, 25)
 ToggleButton.Position = UDim2.new(0, 0, 0, 0)
