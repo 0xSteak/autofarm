@@ -151,6 +151,7 @@ end
 local function murdKillAll()
     local knife = game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") or game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Knife")
     if knife then
+        knife.Parent = game.Players.LocalPlayer.Character
         for i,v in pairs(game.Players:GetPlayers()) do
             if v.Name ~= game.Players.LocalPlayer.Name and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
                 local rootPart = v.Character:FindFirstChild("HumanoidRootPart")
