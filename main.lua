@@ -148,6 +148,74 @@ local function pickGun()
     end
 end
 
+local function murdKillAll()
+    local knife = game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") or game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Knife")
+    if knife then
+        for i,v in pairs(game.Players:GetPlayers()) do
+            if v.Name ~= game.Players.LocalPlayer.Name and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                local rootPart = v.Character:FindFirstChild("HumanoidRootPart")
+                knife.Stab:FireServer("Down")
+                task.wait()
+                task.spawn(function()
+                    firetouchinterest(rootPart, knife.Handle, 0)
+                    firetouchinterest(rootPart, knife.Handle, 1)
+                end)
+            end
+        end
+    else
+        return 0
+    end
+end
+
+local function getAllInfected()
+    local infected = {}
+    for i,v in pairs(game.Players:GetPlayers()) do
+        if v.Name ~= game.Players.LocalPlayer.Name then
+            if v.Backpack:FindFirstChild("Knife") or v.Character and v.Character:FindFirstChild("Knife") then
+                table.insert(infected, v)
+            end
+        end
+    end
+    return infected
+end
+
+local function endRound()
+    if workspace:FindFirstChild("Barn") then
+        if game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") or game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Knife") then
+            repeat
+                task.wait(1)
+            until murdKillAll() == 0
+        else
+            repeat
+                local infected = getAllInfected()
+                if infected.Character and infected.Character:FindFirstChild("HumanoidRootPart") and getRootPart() then
+                    local rootPart = infected.Character.HumanoidRootPart
+                    getRootPart().CFrame = CFrame.new(rootPart.Position + rootPart.CFrame.LookVector * 5)
+                    task.wait(5)
+                end
+                task.wait()
+            until game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") or game.Players.LocalPlayer.Character:FindFirstChild("Knife") or not workspace:FindFirstChild("Barn")
+            murdKillAll()
+        end
+        return
+    end
+
+    local gun = checkGun()
+
+    if not gun then
+        pickGun()
+        task.wait(0.5)
+    end
+
+    if gun and getMurderer() then
+        tp(safePart.Position + Vector3.new(0, 3, 0))
+        task.wait(0.1)
+        repeat shootMurderer() task.wait(3) until not getMurderer()
+    else
+        game.Players.LocalPlayer.Character.Humanoid.Health = 0
+    end
+end
+
 -- Coin Container checker
 task.spawn(function()
     while not stop do
@@ -216,16 +284,7 @@ CoinCollected.OnClientEvent:Connect(function(coinType, collected, max)
     if collected == max then
         canCollect = false
         if shared.noReset then tp(safePart.Position + Vector3.new(0, 3, 0)) return end
-        pickGun()
-        task.wait(0.5)
-        local gun = checkGun()
-        if gun and getMurderer() then
-            tp(safePart.Position + Vector3.new(0, 3, 0))
-            task.wait(0.1)
-            repeat shootMurderer() task.wait(3) until not getMurderer()
-        else
-            game.Players.LocalPlayer.Character.Humanoid.Health = 0
-        end
+        endRound()
     end
 end)
 
