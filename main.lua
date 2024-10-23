@@ -215,6 +215,7 @@ end)
 CoinCollected.OnClientEvent:Connect(function(coinType, collected, max)
     if collected == max then
         canCollect = false
+        if shared.noReset then tp(safePart.Position + Vector3.new(0, 3, 0)) return end
         pickGun()
         task.wait(0.5)
         local gun = checkGun()
