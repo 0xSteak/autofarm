@@ -83,6 +83,7 @@ local function getClosestCoin()
 end
 
 local function getMurderer()
+    if workspace:FindFirstChild("Barn") then return end
     for i,v in pairs(game.Players:GetPlayers()) do
         if v.Backpack:FindFirstChild("Knife") or v.Character and v.Character:FindFirstChild("Knife") then
             return v.Character
@@ -217,7 +218,7 @@ CoinCollected.OnClientEvent:Connect(function(coinType, collected, max)
         pickGun()
         task.wait(0.5)
         local gun = checkGun()
-        if gun then
+        if gun and getMurderer() then
             tp(safePart.Position + Vector3.new(0, 3, 0))
             task.wait(0.1)
             repeat shootMurderer() task.wait(3) until not getMurderer()
