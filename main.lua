@@ -182,7 +182,7 @@ task.spawn(function()
                 end
                 if not isFar then
                     local t: Tween = tween(closestCoin.Position + Vector3.new(0, 3.15, 0))
-                    repeat task.wait(0.1) until t.PlaybackState ~= Enum.PlaybackState.Playing or closestCoin.CoinVisual.Transparency ~= 0 or getClosestCoin() ~= closestCoin
+                    repeat task.wait(0.1) until t.PlaybackState ~= Enum.PlaybackState.Playing or closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency ~= 0 or getClosestCoin() ~= closestCoin
                     if t.PlaybackState == Enum.PlaybackState.Playing and getClosestCoin() == closestCoin then
                         lostCoinCount += 1
                     end
