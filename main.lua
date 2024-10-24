@@ -201,12 +201,12 @@ local function endRound()
         return
     end
 
-    local gun = checkGun()
-
-    if not gun then
+    if not checkGun() then
         pickGun()
         task.wait(0.5)
     end
+
+    local gun = checkGun()
 
     if gun and getMurderer() then
         tp(safePart.Position + Vector3.new(0, 3, 0))
