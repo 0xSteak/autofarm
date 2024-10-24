@@ -235,55 +235,57 @@ end)
 -- Main loop
 task.spawn(function()
     while not stop do
-        if coinContainer and canCollect and enabled then
-            local closestCoin, isFar = getClosestCoin()
-
-            --[[if lastCoin == closestCoin then
-                tries += 1
-            else
-                tries = 0
-            end]]
-
-            lastCoin = closestCoin
+        pcall(function()
+            if coinContainer and canCollect and enabled then
+                local closestCoin, isFar = getClosestCoin()
     
-            if closestCoin and closestCoin.Position then
-                local coinBag2 = coinBag
-                --[[if tries >= 10 then
-                    closestCoin.CoinVisual.Transparency = 0.01
-                end]]
-                if not isFar then
-                    local t: Tween = tween(closestCoin.Position + Vector3.new(0, 3.15, 0))
-                    repeat task.wait(0.1) until t.PlaybackState ~= Enum.PlaybackState.Playing or closestCoin and closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency ~= 0 or getClosestCoin() ~= closestCoin
-                    if t.PlaybackState == Enum.PlaybackState.Playing then
-                        lostCoinCount += 1
-                    else
-                        task.delay(game.Players.LocalPlayer:GetNetworkPing() + 0.1, function()
-                            if coinBag == coinBag2 then
-                                lostCoinCount += 1
-                            end
-                        end)
-                    end
-                    t:Cancel()
+                --[[if lastCoin == closestCoin then
+                    tries += 1
                 else
-                    tp(closestCoin.Position + Vector3.new(0, 5, 0))
+                    tries = 0
+                end]]
+    
+                lastCoin = closestCoin
+        
+                if closestCoin and closestCoin.Position then
+                    local coinBag2 = coinBag
+                    --[[if tries >= 10 then
+                        closestCoin.CoinVisual.Transparency = 0.01
+                    end]]
+                    if not isFar then
+                        local t: Tween = tween(closestCoin.Position + Vector3.new(0, 3.15, 0))
+                        repeat task.wait(0.1) until t.PlaybackState ~= Enum.PlaybackState.Playing or closestCoin and closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency ~= 0 or getClosestCoin() ~= closestCoin
+                        if t.PlaybackState == Enum.PlaybackState.Playing then
+                            lostCoinCount += 1
+                        else
+                            task.delay(game.Players.LocalPlayer:GetNetworkPing() + 0.1, function()
+                                if coinBag == coinBag2 then
+                                    lostCoinCount += 1
+                                end
+                            end)
+                        end
+                        t:Cancel()
+                    else
+                        tp(closestCoin.Position + Vector3.new(0, 5, 0))
+                    end
                 end
-            end
-
-            if lostCoinCount >= 5 then
-                local coins = coinContainer:GetChildren()
-                tp(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
-                lostCoinCount = 0
-            end
-
-            if closestCoin and closestCoin:FindFirstChild("CoinVisual") then
-                closestCoin.CoinVisual.Transparency = 0.01
-            end
-            task.delay(1, function()
-                if closestCoin and closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency == 0.01 then
-                    closestCoin.CoinVisual.Transparency = 0
+    
+                if lostCoinCount >= 5 then
+                    local coins = coinContainer:GetChildren()
+                    tp(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
+                    lostCoinCount = 0
                 end
-            end)
-        end
+    
+                if closestCoin and closestCoin:FindFirstChild("CoinVisual") then
+                    closestCoin.CoinVisual.Transparency = 0.01
+                end
+                task.delay(1, function()
+                    if closestCoin and closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency == 0.01 then
+                        closestCoin.CoinVisual.Transparency = 0
+                    end
+                end)
+            end
+        end)
 
         task.wait(0.1)
     end
