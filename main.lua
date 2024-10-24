@@ -253,9 +253,15 @@ task.spawn(function()
                 end]]
                 if not isFar then
                     local t: Tween = tween(closestCoin.Position + Vector3.new(0, 3.15, 0))
-                    repeat task.wait(0.1) until t.PlaybackState ~= Enum.PlaybackState.Playing or closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency ~= 0 or getClosestCoin() ~= closestCoin
-                    if t.PlaybackState == Enum.PlaybackState.Playing and getClosestCoin() == closestCoin or coinBag == coinBag2 then
+                    repeat task.wait(0.1) until t.PlaybackState ~= Enum.PlaybackState.Playing or closestCoin and closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency ~= 0 or getClosestCoin() ~= closestCoin
+                    if t.PlaybackState == Enum.PlaybackState.Playing then
                         lostCoinCount += 1
+                    else
+                        task.delay(game.Players.LocalPlayer:GetNetworkPing() + 0.1, function()
+                            if coinBag == coinBag2 then
+                                lostCoinCount += 1
+                            end
+                        end)
                     end
                     t:Cancel()
                 else
@@ -340,4 +346,11 @@ game.Players.LocalPlayer.Idled:Connect(function()
 end)
 
 shared.stop = function() stop = true end
+
+task.wait(20)
+
+if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Loading") then
+    queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/0xSteak/autofarm/refs/heads/main/main.lua"))(true)')
+    game:GetService("TeleportService"):Teleport(game.PlaceId)
+end
 
