@@ -17,6 +17,7 @@ local tries = 0
 local enabled = runArgs[1] and true or false
 local canCollect = true
 local tpCooldown = tick()
+local coinBag
 
 local safePart = Instance.new("Part")
 safePart.Parent = workspace
@@ -237,36 +238,45 @@ task.spawn(function()
         if coinContainer and canCollect and enabled then
             local closestCoin, isFar = getClosestCoin()
 
-            if lastCoin == closestCoin then
+            --[[if lastCoin == closestCoin then
                 tries += 1
             else
                 tries = 0
-            end
+            end]]
 
             lastCoin = closestCoin
     
             if closestCoin and closestCoin.Position then
-                if tries >= 10 then
+                local coinBag2 = coinBag
+                --[[if tries >= 10 then
                     closestCoin.CoinVisual.Transparency = 0.01
-                end
+                end]]
                 if not isFar then
                     local t: Tween = tween(closestCoin.Position + Vector3.new(0, 3.15, 0))
                     repeat task.wait(0.1) until t.PlaybackState ~= Enum.PlaybackState.Playing or closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency ~= 0 or getClosestCoin() ~= closestCoin
-                    if t.PlaybackState == Enum.PlaybackState.Playing and getClosestCoin() == closestCoin then
+                    if t.PlaybackState == Enum.PlaybackState.Playing and getClosestCoin() == closestCoin or coinBag == coinBag2 then
                         lostCoinCount += 1
                     end
                     t:Cancel()
                 else
-                    tp(closestCoin.Position + Vector3.new(0, 3.15, 0))
-                    task.wait(1)
+                    tp(closestCoin.Position + Vector3.new(0, 5, 0))
                 end
             end
 
             if lostCoinCount >= 5 then
                 local coins = coinContainer:GetChildren()
-                tp(coins[math.random(1, #coins)].Position + Vector3.new(0, 3.15, 0))
+                tp(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
                 lostCoinCount = 0
             end
+
+            if closestCoin and closestCoin:FindFirstChild("CoinVisual") then
+                closestCoin.CoinVisual.Transparency = 0.01
+            end
+            task.delay(1, function()
+                if closestCoin and closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency == 0.01 then
+                    closestCoin.CoinVisual.Transparency = 0
+                end
+            end)
         end
 
         task.wait(0.1)
@@ -282,7 +292,9 @@ task.spawn(function()
 end)
 
 CoinCollected.OnClientEvent:Connect(function(coinType, collected, max)
+    coinBag = collected
     if collected == max then
+        coinBag = 0
         canCollect = false
         if shared.noReset then tp(safePart.Position + Vector3.new(0, 3, 0)) return end
         endRound()
