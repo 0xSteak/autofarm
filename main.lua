@@ -319,6 +319,9 @@ end)
 
 game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
     queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/0xSteak/autofarm/refs/heads/main/main.lua"))(true)')
+    game:GetService("TeleportService").TeleportInitFailed:Connect(function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId)
+    end)
     game:GetService("TeleportService"):Teleport(game.PlaceId)
 end)
 
