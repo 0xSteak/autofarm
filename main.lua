@@ -121,7 +121,7 @@ local function shootMurderer()
 
         character.HumanoidRootPart.CFrame = CFrame.new(murdRootPart.Position - (murdLookVector * 5), murdRootPart.Position)
         
-        task.wait(0.1)
+        task.wait(game.Players.LocalPlayer:GetNetworkPing() + 0.1)
 
         local aimPos
 
