@@ -8,6 +8,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RoundEndFade: RemoteEvent = ReplicatedStorage.Remotes.Gameplay.RoundEndFade
 local CoinCollected: RemoteEvent = ReplicatedStorage.Remotes.Gameplay.CoinCollected
 local CoinsStarted: RemoteEvent = ReplicatedStorage.Remotes.Gameplay.CoinsStarted
+local GetPlayerData: RemoteEvent = ReplicatedStorage.Remotes.Extras.GetPlayerData
 
 local coinContainer
 local stop = false
@@ -181,6 +182,22 @@ local function getAllInfected()
     return infected
 end
 
+local function checkLast()
+    local playerData = GetPlayerData:InvokeServer()
+    local someoneElseAlive = false
+    if playerData then
+        for i,v in pairs(playerData) do
+            if v.Role ~= "Murderer" and not v.Dead and i ~= game.Players.LocalPlayer.Name then
+                someoneElseAlive = true
+                break
+            end
+        end
+    end
+    if not someoneElseAlive and not playerData[game.Players.LocalPlayer.Name].Dead then
+        return true
+    end
+end
+
 local function endRound()
     if workspace:FindFirstChild("Barn") then
         if game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") or game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Knife") then
@@ -210,10 +227,16 @@ local function endRound()
 
     local gun = checkGun()
 
-    if gun and getMurderer() then
+    if gun and getMurderer() and not checkLast() then
         tp(safePart.Position + Vector3.new(0, 3, 0))
         task.wait(0.1)
-        repeat shootMurderer() task.wait(3) until not getMurderer()
+        repeat shootMurderer() task.wait(3) until not getMurderer() or checkLast()
+        if checkLast() then
+            game.Players.LocalPlayer.Character.Humanoid.Health = 0
+        end
+    elseif getMurderer() and getMurderer().Name ~= game.Players.LocalPlayer.Name and not checkGun() then
+        tp(safePart.Position + Vector3.new(0, 3, 0))
+        repeat pickGun() task.wait(1) until checkGun() or not getMurderer() or checkLast()
     else
         game.Players.LocalPlayer.Character.Humanoid.Health = 0
     end
