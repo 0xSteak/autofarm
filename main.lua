@@ -370,7 +370,11 @@ game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
     game:GetService("TeleportService").TeleportInitFailed:Connect(function()
         game:GetService("TeleportService"):Teleport(game.PlaceId)
     end)
-    game:GetService("TeleportService"):Teleport(game.PlaceId)
+    if #game.Players:GetPlayers() <= 5 then
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
+    else
+        game:GetService("TeleportService"):Teleport(game.PlaceId)
+    end
 end)
 
 local ScreenGui = Instance.new("ScreenGui")
