@@ -249,7 +249,7 @@ local function endRound()
         repeat pickGun() task.wait(1) until checkGun() or not getMurderer() or checkLast()
         if checkLast() then
             game.Players.LocalPlayer.Character.Humanoid.Health = 0
-        elseif checkGun()
+        elseif checkGun() then
             endRound()
         end
     else
