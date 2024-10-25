@@ -121,7 +121,7 @@ local function shootMurderer()
 
         character.HumanoidRootPart.CFrame = CFrame.new(murdRootPart.Position - (murdLookVector * 5), murdRootPart.Position)
         
-        task.wait(0.2)
+        task.wait(0.1)
 
         local aimPos
 
@@ -137,7 +137,7 @@ local function shootMurderer()
             gun.KnifeLocal.CreateBeam.RemoteFunction:InvokeServer(1, (aimPos + (murderer.Humanoid.MoveDirection * murderer.Humanoid.WalkSpeed) / 16).Position, "AH2")
         end)
 
-        task.wait(0.2)
+        task.wait(game.Players.LocalPlayer:GetNetworkPing() + 0.1)
 
         character.HumanoidRootPart.CFrame = oldPos
     end
