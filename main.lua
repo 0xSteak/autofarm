@@ -311,11 +311,11 @@ task.spawn(function()
     
                 if lostCoinCount >= 5 then
                     local coins = coinContainer:GetChildren()
-                    if safeMode then
+                    --if safeMode then
                         tween(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
-                    else
-                        tp(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
-                    end
+                    --else
+                    --    tp(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
+                    --end
                     lostCoinCount = 0
                 end
     
