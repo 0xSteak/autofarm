@@ -193,7 +193,7 @@ local function checkLast()
             end
         end
     end
-    if not someoneElseAlive and not playerData[game.Players.LocalPlayer.Name].Dead then
+    if not someoneElseAlive and playerData[game.Players.LocalPlayer.Name] and not playerData[game.Players.LocalPlayer.Name].Dead then
         return true
     end
 end
