@@ -189,8 +189,9 @@ local function endRound()
             until murdKillAll() == 0
         else
             repeat
-                local infected = getAllInfected()
-                if infected.Character and infected.Character:FindFirstChild("HumanoidRootPart") and getRootPart() then
+                local infecteds = getAllInfected()
+                local infected = #infecteds > 0 and infecteds[math.random(1, #infecteds)]
+                if infected and infected.Character and infected.Character:FindFirstChild("HumanoidRootPart") and getRootPart() then
                     local rootPart = infected.Character.HumanoidRootPart
                     getRootPart().CFrame = CFrame.new(rootPart.Position + rootPart.CFrame.LookVector * 5)
                     task.wait(5)
