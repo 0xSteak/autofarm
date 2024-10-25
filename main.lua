@@ -19,6 +19,7 @@ local enabled = runArgs[1] and true or false
 local canCollect = true
 local tpCooldown = tick()
 local coinBag
+local safeMode = false
 
 local safePart = Instance.new("Part")
 safePart.Parent = workspace
@@ -42,7 +43,9 @@ local function tween(pos)
 
     local distance = (rootPart.Position - pos).Magnitude
 
-    local tween = TweenService:Create(rootPart, TweenInfo.new(distance / 26, Enum.EasingStyle.Linear), {CFrame = CFrame.new(pos)})
+    local speed = safeMode and 16 or 26
+
+    local tween = TweenService:Create(rootPart, TweenInfo.new(distance / speed, Enum.EasingStyle.Linear), {CFrame = CFrame.new(pos)})
     game.Players.LocalPlayer.Character.Humanoid:ChangeState(6)
     tween:Play()
     return tween
@@ -198,6 +201,13 @@ local function checkLast()
     end
 end
 
+local function getMyRole()
+    local playerData = GetPlayerData:InvokeServer()
+    if playerData and playerData[game.Players.LocalPlayer.Name] then
+        return playerData[game.Players.LocalPlayer.Name].Role
+    end
+end
+
 local function endRound()
     if workspace:FindFirstChild("Barn") then
         if game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") or game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Knife") then
@@ -299,7 +309,11 @@ task.spawn(function()
     
                 if lostCoinCount >= 5 then
                     local coins = coinContainer:GetChildren()
-                    tp(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
+                    if safeMode then
+                        tween(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
+                    else
+                        tp(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
+                    end
                     lostCoinCount = 0
                 end
     
@@ -341,6 +355,11 @@ RoundEndFade.OnClientEvent:Connect(function()
 end)
 
 CoinsStarted.OnClientEvent:Connect(function()
+    if getMyRole() == "Murderer" then
+        safeMode = true
+    else
+        safeMode = false
+    end
     canCollect = true
 end)
 
