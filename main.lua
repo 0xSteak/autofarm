@@ -237,6 +237,9 @@ local function endRound()
     elseif getMurderer() and getMurderer().Name ~= game.Players.LocalPlayer.Name and not checkGun() then
         tp(safePart.Position + Vector3.new(0, 3, 0))
         repeat pickGun() task.wait(1) until checkGun() or not getMurderer() or checkLast()
+        if checkLast() then
+            game.Players.LocalPlayer.Character.Humanoid.Health = 0
+        end
     else
         game.Players.LocalPlayer.Character.Humanoid.Health = 0
     end
