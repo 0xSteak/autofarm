@@ -43,7 +43,7 @@ local function tween(pos)
 
     local distance = (rootPart.Position - pos).Magnitude
 
-    local speed = safeMode and 16 or 26
+    local speed = safeMode and 22 or 26
 
     local tween = TweenService:Create(rootPart, TweenInfo.new(distance / speed, Enum.EasingStyle.Linear), {CFrame = CFrame.new(pos)})
     game.Players.LocalPlayer.Character.Humanoid:ChangeState(6)
@@ -312,7 +312,8 @@ task.spawn(function()
                 if lostCoinCount >= 5 then
                     local coins = coinContainer:GetChildren()
                     --if safeMode then
-                        tween(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
+                    local t: Tween = tween(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
+                    t.Completed:Wait()
                     --else
                     --    tp(coins[math.random(1, #coins)].Position + Vector3.new(0, 5, 0))
                     --end
