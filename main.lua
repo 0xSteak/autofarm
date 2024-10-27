@@ -26,7 +26,7 @@ safePart.Parent = workspace
 safePart.CanCollide = true
 safePart.Transparency = 1
 safePart.Anchored = true
-safePart.Size = Vector3.new(10, 1, 10)
+safePart.Size = Vector3.new(30, 1, 30)
 safePart.Position = Vector3.zero
 
 local function getRootPart()
@@ -139,7 +139,7 @@ local function shootMurderer()
 
         task.wait(game.Players.LocalPlayer:GetNetworkPing() + 0.1)
 
-        character.HumanoidRootPart.CFrame = oldPos
+        character.HumanoidRootPart.CFrame = CFrame.new(safePart.Position + Vector3.new(0, 3, 0))
     end
 end
 
