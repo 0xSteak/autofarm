@@ -242,13 +242,13 @@ local function endRound()
         tp(safePart.Position + Vector3.new(0, 3, 0))
         task.wait(0.1)
         repeat shootMurderer() task.wait(3) until not getMurderer() or checkLast()
-        if checkLast() then
+        if checkLast() and not table.find(whitelist, getMurderer().Name) then
             game.Players.LocalPlayer.Character.Humanoid.Health = 0
         end
     elseif getMurderer() and getMurderer().Name ~= game.Players.LocalPlayer.Name and not checkGun() then
         tp(safePart.Position + Vector3.new(0, 3, 0))
         repeat pickGun() task.wait(1) until checkGun() or not getMurderer() or checkLast()
-        if checkLast() then
+        if checkLast() and not table.find(whitelist, getMurderer().Name) then
             game.Players.LocalPlayer.Character.Humanoid.Health = 0
         elseif checkGun() then
             endRound()
