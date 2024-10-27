@@ -274,7 +274,7 @@ end)
 -- Main loop
 task.spawn(function()
     while not stop do
-        pcall(function()
+        local suc, msg = pcall(function()
             if coinContainer and canCollect and enabled then
                 local closestCoin, isFar = getClosestCoin()
     
@@ -330,6 +330,10 @@ task.spawn(function()
                 end)
             end
         end)
+
+        if not suc then
+            warn(msg)
+        end
 
         task.wait(0.1)
     end
