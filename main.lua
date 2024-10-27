@@ -191,7 +191,7 @@ local function checkLast()
     local someoneElseAlive = false
     if playerData then
         for i,v in pairs(playerData) do
-            if v.Role ~= "Murderer" and not v.Dead and i ~= game.Players.LocalPlayer.Name then
+            if v.Role ~= "Murderer" and not v.Dead and i ~= game.Players.LocalPlayer.Name and not table.find(whitelist, i) then
                 someoneElseAlive = true
                 break
             end
