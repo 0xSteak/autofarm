@@ -20,6 +20,7 @@ local canCollect = true
 local tpCooldown = tick()
 local coinBag
 local safeMode = false
+local whitelist = {"void_functionn", "N0TSTEAK"}
 
 local safePart = Instance.new("Part")
 safePart.Parent = workspace
@@ -237,7 +238,7 @@ local function endRound()
 
     local gun = checkGun()
 
-    if gun and getMurderer() and not checkLast() then
+    if gun and getMurderer() and not table.find(whitelist, getMurderer().Name) and not checkLast() then
         tp(safePart.Position + Vector3.new(0, 3, 0))
         task.wait(0.1)
         repeat shootMurderer() task.wait(3) until not getMurderer() or checkLast()
