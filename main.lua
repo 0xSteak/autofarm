@@ -59,6 +59,8 @@ local function tp(pos)
 
     if not rootPart then return end
 
+    rootPart.AssemblyAngularVelocity = Vector3.zero
+    rootPart.AssemblyLinearVelocity = Vector3.zero
     rootPart.CFrame = CFrame.new(pos)
 
     tpCooldown = tick() + 5
@@ -381,6 +383,10 @@ game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
     else
         game:GetService("TeleportService"):Teleport(game.PlaceId)
     end
+end)
+
+game:GetService("RunService").Heartbeat:Connect(function()
+    
 end)
 
 local ScreenGui = Instance.new("ScreenGui")
