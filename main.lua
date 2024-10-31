@@ -20,7 +20,7 @@ local canCollect = true
 local tpCooldown = tick()
 local coinBag
 local safeMode = false
-local whitelist = {"void_functionn", "N0TSTEAK"}
+local whitelist = {"void_functionn", "N0TSTEAK", "uElement", "steak423423"}
 
 local safePart = Instance.new("Part")
 safePart.Parent = workspace
