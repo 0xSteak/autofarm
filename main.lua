@@ -8,7 +8,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RoundEndFade: RemoteEvent = ReplicatedStorage.Remotes.Gameplay.RoundEndFade
 local CoinCollected: RemoteEvent = ReplicatedStorage.Remotes.Gameplay.CoinCollected
 local CoinsStarted: RemoteEvent = ReplicatedStorage.Remotes.Gameplay.CoinsStarted
-local GetPlayerData: RemoteEvent = ReplicatedStorage.Remotes.Extras.GetPlayerData
+local GetPlayerData: RemoteFunction = ReplicatedStorage.Remotes.Extras.GetPlayerData
+local GetData: RemoteFunction = ReplicatedStorage.Remotes.Extras.GetData
 
 local coinContainer
 local stop = false
@@ -20,7 +21,7 @@ local canCollect = true
 local tpCooldown = tick()
 local coinBag
 local safeMode = false
-local whitelist = {"void_functionn", "N0TSTEAK", "uElement", "steak423423", "0xSteakk"}
+local whitelist = {"void_functionn", "N0TSTEAK", "uElement", "steak423423", "0xSteakk", "FireyMane_Official"}
 
 local safePart = Instance.new("Part")
 safePart.Parent = workspace
@@ -362,6 +363,13 @@ end)
 
 RoundEndFade.OnClientEvent:Connect(function()
     canCollect = false
+    local content = ""
+    local candies = GetData:InvokeServer("Materials").Owned.Candies2024
+    if isfile(game.Players.LocalPlayer.Name..".txt") then
+        content = readfile(game.Players.LocalPlayer.Name..".txt")
+    end
+    content = content.."\n"..os.date("%Y-%m-%d %H:%M:%S").." | ".."Candies: "..candies
+    writefile(game.Players.LocalPlayer.Name..".txt", content)
 end)
 
 CoinsStarted.OnClientEvent:Connect(function()
