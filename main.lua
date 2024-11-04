@@ -63,6 +63,8 @@ local function tp(pos)
     rootPart.AssemblyAngularVelocity = Vector3.zero
     rootPart.AssemblyLinearVelocity = Vector3.zero
     rootPart.CFrame = CFrame.new(pos)
+    rootPart.AssemblyAngularVelocity = Vector3.zero
+    rootPart.AssemblyLinearVelocity = Vector3.zero
 
     tpCooldown = tick() + 5
 
@@ -348,6 +350,21 @@ task.spawn(function()
     while not stop do
         lostCoinCount = 0
         task.wait(20)
+    end
+end)
+
+task.spawn(function()
+    while not stop do
+        task.wait(600)
+        queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/0xSteak/autofarm/refs/heads/main/main.lua"))(true)')
+        game:GetService("TeleportService").TeleportInitFailed:Connect(function()
+            game:GetService("TeleportService"):Teleport(game.PlaceId)
+        end)
+        if #game.Players:GetPlayers() <= 5 then
+            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
+        else
+            game:GetService("TeleportService"):Teleport(game.PlaceId)
+        end
     end
 end)
 
