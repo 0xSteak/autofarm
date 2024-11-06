@@ -326,11 +326,11 @@ task.spawn(function()
                     lostCoinCount = 0
                 end
     
-                if closestCoin and closestCoin:FindFirstChild("CoinVisual") then
+                if closestCoin and closestCoin.Parent ~= nil and closestCoin:FindFirstChild("CoinVisual") then
                     closestCoin.CoinVisual.Transparency = 0.01
                 end
                 task.delay(1, function()
-                    if closestCoin and closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency == 0.01 then
+                    if closestCoin and closestCoin.Parent ~= nil and closestCoin:FindFirstChild("CoinVisual") and closestCoin.CoinVisual.Transparency == 0.01 then
                         closestCoin.CoinVisual.Transparency = 0
                     end
                 end)
